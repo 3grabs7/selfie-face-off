@@ -5,9 +5,18 @@ document.addEventListener('DOMContentLoaded', () => {
 	console.log('gogogogogo')
 })
 
-const go = document.querySelector('#startbutton')
-go.addEventListener('click', () => {
-	const image = document.querySelector('#img')
-	const classify = new ImageRecognition(image)
-	const result = classify.run()
+const nextButton = document.querySelector('#nextbutton')
+nextButton.addEventListener('click', async () => {
+	const img = document.querySelector('#img')
+	const res = await getRandomSelfie()
+	console.log(res.URL)
+	img.src = res.URL
+	// const classify = new ImageRecognition(img)
+	// const result = classify.run()
 })
+
+async function getRandomSelfie() {
+	const response = await fetch('http://localhost:6969/selfie')
+	const json = await response.json()
+	return json
+}
