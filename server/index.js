@@ -7,16 +7,15 @@ let selfies = []
 fs.readdir('./selfies', (err, files) => {
 	files.forEach((file) => {
 		selfies.push(file)
-		console.log(file)
 	})
-	console.log(selfies)
 })
 
 const app = express()
 app.use(cors())
 
 app.get('/selfienames', (req, res) => {
-	res.send({ FileNames: selfies })
+	console.log(selfies)
+	res.send({ fileNames: selfies })
 })
 
 app.get('/:imgname', (req, res) => {
