@@ -1,29 +1,31 @@
 const classifier = ml5.imageClassifier('MobileNet', () => {
-	console.log("Tjenna")
-})
-let imgNames
+	console.log('Tjenna');
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
-	const response = await fetch('http://localhost:6969/selfienames')
-	const json = await response.json()
-	imgNames = json.fileNames
-})
+	getSelfiesNames().then(getRandomSelfie).then(displaySelfie);
+});
 
-const nextButton = document.querySelector('#nextbutton')
+const nextButton = document.querySelector('#nextbutton');
 nextButton.addEventListener('click', async () => {
-	const img = document.querySelector('#img')
-	const imgUrl = await getRandomSelfie()
-	img.src = imgUrl
+	getSelfiesNames().then(getRandomSelfie).then(displaySelfie);
+});
 
-	classifier.classify(img, (err, results) => {
-		console.log(results)
-	})
-
-})
-
-// Get all img names -> pick random
-async function getRandomSelfie() {
-	const index = Math.floor(Math.random() * imgNames.length)
-	const response = await fetch(`http://localhost:6969/${imgNames[index]}`)
-	return response.url
+async function getSelfiesNames() {
+	const response = await fetch('http://localhost:6969/selfienames');
+	const json = await response.json();
+	return json.fileNames;
 }
 
+async function getRandomSelfie(selfieNames) {
+	const index = Math.floor(Math.random() * selfieNames.length);
+	const response = await fetch(`http://localhost:6969/${selfieNames[index]}`);
+	return response.url;
+}
+
+function displaySelfie(imgUrl) {
+	const img = document.querySelector('#img');
+	img.src = imgUrl;
+}
+
+async function classifyImg(element) {}

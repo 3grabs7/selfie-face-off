@@ -1,28 +1,27 @@
-const express = require('express')
-const cors = require('cors')
-const fs = require('fs')
-const path = require('path')
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
-let selfies = []
+let selfies = [];
 fs.readdir('./selfies', (err, files) => {
 	files.forEach((file) => {
-		selfies.push(file)
-	})
-})
+		selfies.push(file);
+	});
+});
 
-const app = express()
-app.use(cors())
+const app = express();
+app.use(cors());
 
 app.get('/selfienames', (req, res) => {
-	console.log(selfies)
-	res.send({ fileNames: selfies })
-})
+	res.send({ fileNames: selfies });
+});
 
 app.get('/:imgname', (req, res) => {
-	res.sendFile(__dirname + '\\selfies\\' + req.params.imgname)
-})
+	res.sendFile(__dirname + '\\selfies\\' + req.params.imgname);
+});
 
-const PORT = 6969
+const PORT = 6969;
 app.listen(PORT, () => {
-	console.log(`Listening osv -> ${PORT}`)
-})
+	console.log(`Listening osv -> ${PORT}`);
+});
