@@ -1,3 +1,5 @@
+import classify from './classify.js';
+
 const ERROR_IMG = 'https://i.redd.it/swcvl4m336f51.png';
 
 export default async function loadSelfie() {
@@ -27,6 +29,9 @@ function displaySelfie(imgUrl) {
 	const img = document.querySelector('#img');
 	if (imgUrl !== undefined) {
 		img.src = imgUrl;
+		img.addEventListener('load', () => {
+			classify();
+		});
 		return;
 	}
 	img.src = ERROR_IMG;
