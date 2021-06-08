@@ -2,11 +2,11 @@ import classify from './classify.js';
 
 const ERROR_IMG = 'https://i.redd.it/swcvl4m336f51.png';
 
-export default async function loadSelfie() {
+export default async function loadSelfie(loadingCallback) {
 	try {
 		const selfieNames = await getSelfiesNames();
 		const randomSelfie = await getRandomSelfie(selfieNames);
-		displaySelfie(randomSelfie);
+		displaySelfie(randomSelfie, loadingCallback);
 	} catch {
 		console.log('start server n00b');
 		displaySelfie(undefined);
@@ -25,12 +25,13 @@ async function getRandomSelfie(selfieNames) {
 	return response.url;
 }
 
-function displaySelfie(imgUrl) {
+function displaySelfie(imgUrl, loadingCallback) {
 	const img = document.querySelector('#img');
 	if (imgUrl !== undefined) {
 		img.src = imgUrl;
 		img.addEventListener('load', () => {
 			classify();
+			loadingCallback();
 		});
 		return;
 	}

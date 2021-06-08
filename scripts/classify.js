@@ -1,4 +1,6 @@
 import loadSelfie from './loadSelfie.js';
+import GameState from './GameState.js';
+import { currentGameState } from './main.js';
 
 const classifier = ml5.imageClassifier('MobileNet', modelLoaded);
 
@@ -18,7 +20,13 @@ function displayClassification(classification) {
 
 	Array.from(classification)
 		.map((e) => e.label)
-		.map((label) => label.split(/[,]/)[0])
+		.map((label, i) => {
+			const firstLabel = label.split(/[,]/)[0];
+			if (i === 0) {
+				currentGameState.setCorrectAnswer(firstLabel);
+			}
+			return firstLabel;
+		})
 		.forEach((label) => {
 			const labelDiv = document.createElement('div');
 			labelDiv.className = 'main_classifications_item';
@@ -26,6 +34,9 @@ function displayClassification(classification) {
 			classifyDiv.append(labelDiv);
 
 			// add event handlers for each labels
+			labelDiv.addEventListener('click', (e) => {
+				currentGameState.guess(e.target.innerText);
+			});
 			// points system for getting closest to ml5s predictions
 		});
 }
